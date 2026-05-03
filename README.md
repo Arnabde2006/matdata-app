@@ -1,94 +1,98 @@
-# MatdataApp (मतदाता ऐप)
+# MatdataApp (मतदाता ऐप) 🇮🇳
 
-A comprehensive web application that helps Indian citizens understand the election process, learn about their democratic rights, and make informed voting decisions.
+An AI-powered Indian Election Education Platform built with Google Antigravity for PromptWars Virtual 2026.
 
-## Features
+## Chosen Vertical
+**Civic Education & Voter Awareness** — Helping Indian citizens understand the election process, learn democratic concepts, and make informed voting decisions.
 
-1. **Interactive Election Timeline Wizard:** Track important dates for upcoming Lok Sabha, Vidhan Sabha, and Municipal elections.
-2. **AI-Powered Chatbot Assistant:** Get answers to your election-related questions in English and Hindi.
-3. **Flashcard Learning System:** Gamified learning experience to understand democratic concepts and voting procedures.
-4. **Candidate & Party Information Hub:** Search and explore profiles of candidates contesting in your constituency.
-5. **Polling Booth Finder:** Find your exact polling station using your EPIC (Voter ID) number.
+## Problem Statement
+Millions of Indian voters, especially first-time voters, lack awareness about:
+- Voter registration process and deadlines
+- How EVMs and VVPATs work
+- Candidate information and party manifestos
+- Their polling booth location
 
-## Technology Stack
+## Solution Approach
+Built a full-stack bilingual (Hindi + English) web platform with:
+1. **AI Chatbot** — Gemini 2.5 Flash powered assistant answering election FAQs
+2. **Election Timeline** — State-specific voting deadlines and key dates
+3. **Flashcard Learning** — 45 bilingual flashcards covering election terminology
+4. **Candidate Hub** — Search and compare political candidates
+5. **Booth Finder** — Find polling station using EPIC (Voter ID) number
 
-### Frontend
-- React 18.2 with TypeScript
-- Vite
-- Tailwind CSS with Indian Flag Color Palette
-- shadcn/ui components
-- React Router v6
-- i18next (English/Hindi Support)
+## How It Works
+- User visits the platform and selects their preferred language (Hindi/English)
+- AI Assistant answers questions about Indian elections using Gemini API
+- Timeline wizard shows state-specific election dates for Lok Sabha/Vidhan Sabha
+- Flashcards use spaced repetition algorithm for effective learning
+- Booth Finder uses OpenStreetMap/Nominatim to display polling location on map
 
-### Backend
-- Node.js & Express.js
-- TypeScript
-- PostgreSQL (SQLite for local dev)
-- Prisma ORM
-- Zod Validation
-
-## Quick Start (Local Development)
-
-### Prerequisites
-- Node.js 20+
-- npm or yarn
-
-### 1. Setup Backend
-```bash
-cd backend
-npm install
-cp .env.example .env
-npm run prisma:generate
-npm run prisma:migrate
-npm run dev
-```
-
-### 2. Setup Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-### 3. Access the Application
-Open `http://localhost:5173` in your browser.
-
-## Deployment to Google Cloud Run
-
-This application is containerized and ready for deployment to Google Cloud Run.
-
-1. Build the Docker image:
-   ```bash
-   docker build -t gcr.io/YOUR_PROJECT_ID/matdata-app .
-   ```
-
-2. Push to Container Registry:
-   ```bash
-   docker push gcr.io/YOUR_PROJECT_ID/matdata-app
-   ```
-
-3. Deploy to Cloud Run:
-   ```bash
-   gcloud run deploy matdata-app \
-     --image gcr.io/YOUR_PROJECT_ID/matdata-app \
-     --platform managed \
-     --region asia-south1 \
-     --allow-unauthenticated \
-     --set-env-vars="DATABASE_URL=your_db_url,CLAUDE_API_KEY=your_api_key"
-   ```
-
-## License
-MIT License
+## Tech Stack
+- **Frontend:** React 18 + TypeScript + Tailwind CSS + Vite
+- **Backend:** Node.js + Express + Prisma ORM
+- **AI:** Google Gemini 2.5 Flash API
+- **Maps:** Leaflet.js + OpenStreetMap (free, no API key needed)
+- **Deployment:** Google Cloud Run (asia-south1/Mumbai region)
+- **CI/CD:** Google Cloud Build + Artifact Registry
+- **i18n:** react-i18next (Hindi + English)
 
 ## Google Services Used
-- **Gemini 2.5 Flash API** — AI-powered bilingual chatbot
-- **Google Cloud Run** — Serverless container deployment
-- **Google Cloud Build** — CI/CD pipeline
-- **Google Artifact Registry** — Docker container storage
-- **OpenStreetMap + Nominatim** — Free map and geocoding
+- **Gemini 2.5 Flash API** — Powers the bilingual AI election assistant
+- **Google Cloud Run** — Serverless container deployment in Mumbai region
+- **Google Cloud Build** — Automated container builds and deployments
+- **Google Artifact Registry** — Docker container image storage
 
-## Architecture
-- Frontend: React 18 + TypeScript + Tailwind CSS
-- Backend: Node.js + Express + Prisma
-- Database: SQLite (dev) / PostgreSQL (prod)
-- Deployment: Google Cloud Run (asia-south1/Mumbai)
+## Assumptions Made
+- Sample/mock data used for candidate information (real ECI API integration planned)
+- Booth finder uses demo data with real map coordinates for Varanasi
+- Hindi translations cover major UI elements (full translation in progress)
+- SQLite used for development (PostgreSQL for production)
+
+## Live Demo
+🌐 [https://matdata-app-2977556014.asia-south1.run.app](https://matdata-app-2977556014.asia-south1.run.app)
+
+## Local Setup
+```bash
+# Clone the repository
+git clone https://github.com/Arnabde2006/matdata-app.git
+cd matdata-app
+
+# Install frontend dependencies
+cd frontend && npm install
+
+# Install backend dependencies
+cd ../backend && npm install
+
+# Set up environment variables
+cp backend/.env.example backend/.env
+# Add your GEMINI_API_KEY to backend/.env
+
+# Run backend
+cd backend && npm run dev
+
+# Run frontend (new terminal)
+cd frontend && npm run dev
+```
+
+## Environment Variables
+GEMINI_API_KEY=your_gemini_api_key
+JWT_SECRET=your_jwt_secret
+NODE_ENV=development
+PORT=3000
+DATABASE_URL=file:./dev.db
+## Security
+- Helmet.js for HTTP security headers
+- Rate limiting: 50 requests per 15 minutes per IP
+- Input validation with Zod
+- No sensitive voter data stored
+- HTTPS enforced on Cloud Run
+
+## Accessibility
+- Bilingual support (Hindi + English)
+- Mobile-first responsive design
+- ARIA labels on interactive elements
+- High contrast color scheme
+- Large tap targets for mobile users
+
+## Built By
+**Arnab De** — PromptWars Virtual 2026
