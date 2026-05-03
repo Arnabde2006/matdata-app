@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 export const prisma = new PrismaClient();
 
 // Security Middlewares
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors());
 
 // Rate Limiting (50 requests per 15 mins per IP)
@@ -80,4 +80,27 @@ app.get('*', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+});
+
+// Booth Finder Route
+app.post('/api/booth', async (req, res) => {
+  const { epicNumber } = req.body;
+  
+  // Sample booth data for demo
+  const boothData = {
+    voterName: "Sample Voter",
+    epicNumber: epicNumber,
+    partNumber: "142",
+    serialNumber: "567",
+    boothName: "Govt Primary School, Room 2",
+    address: "Sector 4, Main Road, Varanasi, UP 221005",
+    latitude: 25.3176,
+    longitude: 82.9739,
+    pollingHours: "7:00 AM - 6:00 PM",
+    facilities: ["Wheelchair Ramp", "Drinking Water", "Washroom"],
+    assemblyConstituency: "Varanasi North",
+    parliamentaryConstituency: "Varanasi"
+  };
+  
+  res.json(boothData);
 });

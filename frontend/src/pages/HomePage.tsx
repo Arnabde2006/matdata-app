@@ -21,6 +21,7 @@ export const HomePage = () => {
         <h1 className="text-4xl md:text-6xl font-heading font-bold text-accent mb-6 leading-tight">
           Your Voice. Your Vote. <br/> <span className="text-primary">Your Democracy.</span>
         </h1>
+        <p className="text-lg text-gray-600 dark:text-gray-400 mt-2 font-medium">Built by Arnab De</p>
         <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
           {t('welcome_msg')} Discover everything you need to know about Indian elections in one place.
         </p>

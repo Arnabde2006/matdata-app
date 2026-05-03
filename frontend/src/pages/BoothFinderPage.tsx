@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MapPin, Search, Navigation } from 'lucide-react';
-import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
-let DefaultIcon = L.icon({
-    iconUrl: icon,
-    shadowUrl: iconShadow,
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
-L.Marker.prototype.options.icon = DefaultIcon;
 
 export const BoothFinderPage = () => {
   const { t } = useTranslation();
@@ -24,34 +20,27 @@ export const BoothFinderPage = () => {
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!epicNumber) return;
-    
     setIsLoading(true);
     try {
-      const mockAddress = 'Sector 4, Main Road, Varanasi, UP 221005';
       const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent('Varanasi Uttar Pradesh')}&format=json&limit=1`);
       const data = await response.json();
-      
       let lat = 25.3176;
       let lon = 82.9739;
-      
       if (data && data.length > 0) {
         lat = parseFloat(data[0].lat);
         lon = parseFloat(data[0].lon);
       }
-
       setBoothData({
         name: 'Govt Primary School, Room 2',
-        address: mockAddress,
+        address: 'Sector 4, Main Road, Varanasi, UP 221005',
         partNumber: '142',
         serialNumber: '567',
-        officer: 'Sanjay Kumar (BLO)',
-        officerPhone: '+91 98765 43210',
         facilities: ['Wheelchair Ramp', 'Drinking Water', 'Washroom'],
         lat,
         lon
       });
     } catch (error) {
-      console.error('Error fetching map data:', error);
+      console.error('Error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -66,7 +55,6 @@ export const BoothFinderPage = () => {
         </h2>
         <p className="text-muted-foreground mb-6">Find your polling station using your EPIC (Voter ID) number.</p>
       </div>
-
       <div className="grid md:grid-cols-5 gap-8">
         <div className="md:col-span-2">
           <div className="bg-card border border-border rounded-xl shadow-sm p-6">
@@ -74,15 +62,15 @@ export const BoothFinderPage = () => {
             <form onSubmit={handleSearch} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1">EPIC Number</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g. ABC1234567"
+                <input
+                  type="text"
+                  placeholder="E.G. ABC1234567"
                   className="w-full px-4 py-2 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-primary uppercase"
                   value={epicNumber}
                   onChange={(e) => setEpicNumber(e.target.value)}
                 />
               </div>
-              <button 
+              <button
                 type="submit"
                 disabled={isLoading}
                 className="w-full bg-primary text-white py-2 rounded-md font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
@@ -92,7 +80,6 @@ export const BoothFinderPage = () => {
             </form>
           </div>
         </div>
-
         <div className="md:col-span-3">
           {boothData ? (
             <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden flex flex-col h-full">
@@ -105,7 +92,6 @@ export const BoothFinderPage = () => {
                   <p className="font-bold text-lg text-foreground">{boothData.name}</p>
                   <p className="text-muted-foreground">{boothData.address}</p>
                 </div>
-                
                 <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
                   <div>
                     <h4 className="text-sm text-muted-foreground font-medium mb-1">Part Number</h4>
@@ -116,7 +102,6 @@ export const BoothFinderPage = () => {
                     <p className="font-bold text-foreground">{boothData.serialNumber}</p>
                   </div>
                 </div>
-
                 <div className="pt-4 border-t border-border">
                   <h4 className="text-sm text-muted-foreground font-medium mb-2">Available Facilities</h4>
                   <div className="flex flex-wrap gap-2">
@@ -129,21 +114,16 @@ export const BoothFinderPage = () => {
               <div className="h-[250px] w-full relative z-0 border-t border-border">
                 <MapContainer center={[boothData.lat, boothData.lon]} zoom={14} scrollWheelZoom={false} className="h-full w-full z-0">
                   <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
                   <Marker position={[boothData.lat, boothData.lon]}>
-                    <Popup>
-                      <div className="font-sans">
-                        <p className="font-bold m-0 text-sm">{boothData.name}</p>
-                        <p className="m-0 text-xs text-muted-foreground">{boothData.address}</p>
-                      </div>
-                    </Popup>
+                    <Popup>{boothData.name}<br/>{boothData.address}</Popup>
                   </Marker>
                 </MapContainer>
               </div>
               <div className="p-4 border-t border-border bg-muted/30">
-                <button 
+                <button
                   onClick={() => window.open(`https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=%3B${boothData.lat}%2C${boothData.lon}`, '_blank')}
                   className="w-full text-center text-accent font-medium text-sm flex items-center justify-center gap-2 hover:underline"
                 >
