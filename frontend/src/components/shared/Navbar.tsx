@@ -38,6 +38,7 @@ export const Navbar = () => {
         </nav>
 
         <div className="flex items-center gap-2">
+          <div id="google_translate_element" className="mr-2 hidden lg:block"></div>
           <LanguageToggle />
         </div>
       </div>

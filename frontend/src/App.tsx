@@ -1,19 +1,21 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { Navbar } from './components/shared/Navbar'
-import { HomePage } from './pages/HomePage'
-import { TimelinePage } from './pages/TimelinePage'
-import { FlashcardsPage } from './pages/FlashcardsPage'
-import { CandidatesPage } from './pages/CandidatesPage'
-import { BoothFinderPage } from './pages/BoothFinderPage'
-import { ChatbotPage } from './pages/ChatbotPage'
+import { PageSkeleton } from './components/shared/PageSkeleton'
+
+const HomePage = lazy(() => import('./pages/HomePage').then(module => ({ default: module.HomePage })))
+const TimelinePage = lazy(() => import('./pages/TimelinePage').then(module => ({ default: module.TimelinePage })))
+const FlashcardsPage = lazy(() => import('./pages/FlashcardsPage').then(module => ({ default: module.FlashcardsPage })))
+const CandidatesPage = lazy(() => import('./pages/CandidatesPage').then(module => ({ default: module.CandidatesPage })))
+const BoothFinderPage = lazy(() => import('./pages/BoothFinderPage').then(module => ({ default: module.BoothFinderPage })))
+const ChatbotPage = lazy(() => import('./pages/ChatbotPage').then(module => ({ default: module.ChatbotPage })))
 
 function App() {
   return (
     <div className="min-h-screen flex flex-col bg-background font-sans antialiased">
       <Navbar />
       <main className="flex-1 container mx-auto p-4 md:p-8">
-        <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+        <Suspense fallback={<PageSkeleton />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/timeline" element={<TimelinePage />} />

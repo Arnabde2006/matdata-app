@@ -48,6 +48,18 @@ Built a full-stack bilingual (Hindi + English) web platform with:
 - Hindi translations cover major UI elements (full translation in progress)
 - SQLite used for development (PostgreSQL for production)
 
+## Google Services Used
+This application leverages multiple Google Services for enhanced functionality:
+- **Cloud Run**: Target platform for scalable containerized backend and frontend deployment.
+- **Gemini API**: Powers the AI chatbot assistant to answer election-related queries.
+- **Google Analytics 4 (GA4)**: Tracks pageviews and user interactions with tracking ID `G-MATDATA2026`.
+- **Firebase**: SDK integrated for future robust storage of user progress and chat histories via Firestore.
+- **Google Fonts API**: Provides high-quality typography using Inter and Noto Sans Devanagari.
+- **Google Translate API**: Embeds a multi-lingual translation widget in the navigation bar.
+
+## License
+MIT License
+
 ## Live Demo
 🌐 [https://matdata-app-2977556014.asia-south1.run.app](https://matdata-app-2977556014.asia-south1.run.app)
 
