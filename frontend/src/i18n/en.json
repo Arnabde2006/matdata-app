@@ -1,0 +1,16 @@
+{
+  "translation": {
+    "app_title": "MatdataApp",
+    "welcome_msg": "Welcome to MatdataApp. Let's get started.",
+    "nav_home": "Home",
+    "nav_timeline": "Timeline",
+    "nav_chatbot": "AI Assistant",
+    "nav_flashcards": "Learn",
+    "nav_candidates": "Candidates",
+    "nav_booth": "Booth Finder",
+    "chatbot_placeholder": "Type your question here...",
+    "btn_know_it": "Know it",
+    "btn_still_learning": "Still learning",
+    "search_candidate": "Search candidates or parties..."
+  }
+}

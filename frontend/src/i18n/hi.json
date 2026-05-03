@@ -1,0 +1,16 @@
+{
+  "translation": {
+    "app_title": "मतदाता ऐप",
+    "welcome_msg": "मतदाता ऐप में आपका स्वागत है। चलिए शुरू करते हैं।",
+    "nav_home": "होम",
+    "nav_timeline": "चुनाव समयरेखा",
+    "nav_chatbot": "एआई सहायक",
+    "nav_flashcards": "सीखें",
+    "nav_candidates": "उम्मीदवार",
+    "nav_booth": "मतदान केंद्र खोजें",
+    "chatbot_placeholder": "अपना प्रश्न यहां टाइप करें...",
+    "btn_know_it": "समझ गया",
+    "btn_still_learning": "फिर से सीखें",
+    "search_candidate": "उम्मीदवार या पार्टी खोजें..."
+  }
+}

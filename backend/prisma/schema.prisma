@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model State {
+  id                   Int             @id @default(autoincrement())
+  name_en              String
+  name_hi              String
+  constituencies_count Int
+  constituencies       Constituency[]
+  elections            Election[]
+}
+
+model Constituency {
+  id         Int         @id @default(autoincrement())
+  state_id   Int
+  name_en    String
+  name_hi    String
+  type       String      // LS or VS
+  state      State       @relation(fields: [state_id], references: [id])
+  candidates Candidate[]
+}
+
+model Candidate {
+  id              Int          @id @default(autoincrement())
+  name_en         String
+  name_hi         String
+  party_id        Int
+  constituency_id Int
+  photo_url       String?
+  assets          String?
+  criminal_cases  Int          @default(0)
+  party           Party        @relation(fields: [party_id], references: [id])
+  constituency    Constituency @relation(fields: [constituency_id], references: [id])
+}
+
+model Party {
+  id           Int         @id @default(autoincrement())
+  name_en      String
+  name_hi      String
+  symbol       String
+  colors       String
+  founded_year Int
+  candidates   Candidate[]
+}
+
+model Election {
+  id           Int      @id @default(autoincrement())
+  type         String   // LS, VS, Municipal
+  state_id     Int?
+  phase        Int
+  polling_date DateTime
+  state        State?   @relation(fields: [state_id], references: [id])
+}
+
+model User {
+  id            Int             @id @default(autoincrement())
+  epic_number   String          @unique
+  name          String?
+  phone         String?
+  state         String?
+  language_pref String          @default("en")
+  progress      UserProgress[]
+}
+
+model Flashcard {
+  id            Int             @id @default(autoincrement())
+  term_en       String
+  term_hi       String
+  definition_en String
+  definition_hi String
+  category      String
+  progress      UserProgress[]
+}
+
+model UserProgress {
+  id            Int       @id @default(autoincrement())
+  user_id       Int
+  flashcard_id  Int
+  mastery_level Int       @default(0) // 0-5
+  user          User      @relation(fields: [user_id], references: [id])
+  flashcard     Flashcard @relation(fields: [flashcard_id], references: [id])
+
+  @@unique([user_id, flashcard_id])
+}

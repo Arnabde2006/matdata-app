@@ -1,0 +1,15 @@
+node_modules/
+dist/
+build/
+.next/
+storybook-static/
+coverage/
+.env
+.env.local
+.env.production
+*.log
+.DS_Store
+Thumbs.db
+public/forms/*.pdf
+assets/party-symbols/
+.prisma/
