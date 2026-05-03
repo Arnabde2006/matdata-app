@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 export const prisma = new PrismaClient();
 
 // Security Middlewares
-app.use(helmet({ contentSecurityPolicy: false }));
+app.use(helmet({ contentSecurityPolicy: { directives: { defaultSrc: ["'self'"], connectSrc: ["'self'", "https://nominatim.openstreetmap.org", "https://generativelanguage.googleapis.com"], imgSrc: ["'self'", "data:", "https://*.tile.openstreetmap.org"], scriptSrc: ["'self'", "'unsafe-inline'"], styleSrc: ["'self'", "'unsafe-inline'", "https://unpkg.com"] } } }));
 app.use(cors());
 
 // Rate Limiting (50 requests per 15 mins per IP)
