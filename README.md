@@ -79,3 +79,16 @@ This application is containerized and ready for deployment to Google Cloud Run.
 
 ## License
 MIT License
+
+## Google Services Used
+- **Gemini 2.5 Flash API** — AI-powered bilingual chatbot
+- **Google Cloud Run** — Serverless container deployment
+- **Google Cloud Build** — CI/CD pipeline
+- **Google Artifact Registry** — Docker container storage
+- **OpenStreetMap + Nominatim** — Free map and geocoding
+
+## Architecture
+- Frontend: React 18 + TypeScript + Tailwind CSS
+- Backend: Node.js + Express + Prisma
+- Database: SQLite (dev) / PostgreSQL (prod)
+- Deployment: Google Cloud Run (asia-south1/Mumbai)
