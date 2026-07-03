@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MessageSquare, Send, Bot, User } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { SpeakButton } from '../components/shared/SpeakButton';
 
 export const ChatbotPage = () => {
   const { t, i18n } = useTranslation();
@@ -77,7 +78,7 @@ export const ChatbotPage = () => {
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.role === 'user' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
                   {msg.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
                 </div>
-                <div className={`p-3 rounded-lg ${msg.role === 'user' ? 'bg-primary/10 text-foreground rounded-tr-none' : 'bg-muted text-foreground rounded-tl-none'}`}>
+                <div className={`p-3 rounded-lg relative ${msg.role === 'user' ? 'bg-primary/10 text-foreground rounded-tr-none' : 'bg-muted text-foreground rounded-tl-none pr-8'}`}>
                   {msg.role === 'user' ? (
                     <p className="text-sm">{msg.content}</p>
                   ) : (
@@ -94,6 +95,9 @@ export const ChatbotPage = () => {
                       >
                         {msg.content}
                       </ReactMarkdown>
+                      <div className="absolute right-1.5 top-1.5">
+                        <SpeakButton text={msg.content} lang={i18n.language === 'hi' ? 'hi' : 'en'} />
+                      </div>
                     </div>
                   )}
                 </div>

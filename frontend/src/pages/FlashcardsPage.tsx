@@ -1,47 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Flashcard } from '../components/Flashcards/Flashcard';
-import { BookOpen } from 'lucide-react';
-
-const SAMPLE_FLASHCARDS = [
-  {
-    id: 1,
-    term_en: 'Lok Sabha',
-    term_hi: 'लोकसभा',
-    definition_en: 'The lower house of India\'s bicameral Parliament, with members directly elected by citizens.',
-    definition_hi: 'भारत की द्विसदनीय संसद का निचला सदन, जिसके सदस्य सीधे नागरिकों द्वारा चुने जाते हैं।',
-    category: 'Election Basics'
-  },
-  {
-    id: 2,
-    term_en: 'Universal Adult Franchise',
-    term_hi: 'सार्वभौमिक वयस्क मताधिकार',
-    definition_en: 'The right of all adult citizens (18 years and above) to vote in elections regardless of caste, religion, or gender.',
-    definition_hi: 'जाति, धर्म या लिंग की परवाह किए बिना चुनाव में वोट देने का सभी वयस्क नागरिकों (18 वर्ष और उससे अधिक) का अधिकार।',
-    category: 'Election Basics'
-  },
-  {
-    id: 3,
-    term_en: 'NOTA',
-    term_hi: 'नोटा',
-    definition_en: 'None of the Above. A ballot option allowing voters to disapprove of all candidates.',
-    definition_hi: 'उपरोक्त में से कोई नहीं। एक मतपत्र विकल्प जो मतदाताओं को सभी उम्मीदवारों को अस्वीकार करने की अनुमति देता है।',
-    category: 'Election Basics'
-  }
-];
+import { BookOpen, RefreshCw } from 'lucide-react';
+import { getDueCards, recordAnswer } from '../lib/spacedRepetition';
 
 export const FlashcardsPage = () => {
   const { t } = useTranslation();
+  const [allCards, setAllCards] = useState<any[]>([]);
+  const [progressMap, setProgressMap] = useState<Record<string, any>>({});
+  const [dueCards, setDueCards] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('matdata_flashcard_progress');
+    const pMap = stored ? JSON.parse(stored) : {};
+    setProgressMap(pMap);
+
+    fetch('/api/flashcards')
+      .then((res) => res.json())
+      .then((data) => {
+        setAllCards(data);
+        const due = getDueCards(data, pMap);
+        setDueCards(due);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error loading flashcards:', err);
+        setIsLoading(false);
+      });
+  }, []);
 
   const handleNext = (knewIt: boolean) => {
-    console.log(knewIt ? 'User knew it' : 'User is still learning');
-    if (currentIndex < SAMPLE_FLASHCARDS.length - 1) {
-      setCurrentIndex(prev => prev + 1);
+    if (dueCards.length === 0) return;
+    const currentCard = dueCards[currentIndex];
+
+    const updatedMap = recordAnswer(currentCard.id, knewIt);
+    setProgressMap(updatedMap);
+
+    const updatedDue = getDueCards(allCards, updatedMap);
+    setDueCards(updatedDue);
+
+    if (updatedDue.length === 0) {
+      setCurrentIndex(0);
     } else {
-      setCurrentIndex(0); // Loop for demo
+      if (knewIt) {
+        setCurrentIndex((prev) => (prev >= updatedDue.length ? 0 : prev));
+      } else {
+        setCurrentIndex((prev) => (prev + 1 >= updatedDue.length ? 0 : prev + 1));
+      }
     }
   };
+
+  const handleReset = () => {
+    localStorage.removeItem('matdata_flashcard_progress');
+    setProgressMap({});
+    const due = getDueCards(allCards, {});
+    setDueCards(due);
+    setCurrentIndex(0);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="max-w-4xl mx-auto py-8 text-center text-muted-foreground">
+        Loading flashcards...
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto py-8">
@@ -51,14 +76,36 @@ export const FlashcardsPage = () => {
           {t('nav_flashcards')}
         </h2>
         <p className="text-muted-foreground">Master election concepts with our bilingual flashcards.</p>
-        <p className="text-sm mt-2 text-primary font-medium">Card {currentIndex + 1} of {SAMPLE_FLASHCARDS.length}</p>
+        <div className="flex flex-col items-center justify-center gap-2 mt-4">
+          <p className="text-sm text-primary font-medium">
+            {dueCards.length} cards due today
+          </p>
+          {dueCards.length > 0 && (
+            <p className="text-xs text-muted-foreground">
+              Card {currentIndex + 1} of {dueCards.length}
+            </p>
+          )}
+        </div>
       </div>
 
-      <Flashcard 
-        key={SAMPLE_FLASHCARDS[currentIndex].id} 
-        card={SAMPLE_FLASHCARDS[currentIndex]} 
-        onNext={handleNext} 
-      />
+      {dueCards.length > 0 ? (
+        <Flashcard 
+          key={dueCards[currentIndex].id} 
+          card={dueCards[currentIndex]} 
+          onNext={handleNext} 
+        />
+      ) : (
+        <div className="bg-card border border-border rounded-xl shadow-sm p-8 text-center max-w-md mx-auto">
+          <h3 className="font-heading font-bold text-xl text-foreground mb-2">All caught up!</h3>
+          <p className="text-muted-foreground mb-6">You have reviewed all due flashcards. Check back tomorrow!</p>
+          <button 
+            onClick={handleReset}
+            className="inline-flex items-center gap-2 px-4 py-2 border border-border hover:border-primary hover:text-primary rounded-lg transition-colors text-sm font-medium"
+          >
+            <RefreshCw className="w-4 h-4" /> Reset Study Progress
+          </button>
+        </div>
+      )}
     </div>
   );
 };

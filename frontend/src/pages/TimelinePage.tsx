@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Calendar, AlertCircle } from 'lucide-react';
 import dayjs from 'dayjs';
-
-const SAMPLE_TIMELINE = [
-  { id: 1, title_en: 'Notification of Election', title_hi: 'चुनाव की अधिसूचना', date: '2024-03-16', desc_en: 'Official announcement by ECI', desc_hi: 'ईसीआई द्वारा आधिकारिक घोषणा' },
-  { id: 2, title_en: 'Last Date for Nominations', title_hi: 'नामांकन की अंतिम तिथि', date: '2024-03-27', desc_en: 'Final day for candidates to submit papers', desc_hi: 'उम्मीदवारों के लिए कागजात जमा करने का अंतिम दिन' },
-  { id: 3, title_en: 'Polling Date (Phase 1)', title_hi: 'मतदान तिथि (चरण 1)', date: '2024-04-19', desc_en: 'Cast your vote', desc_hi: 'अपना वोट डालें' },
-  { id: 4, title_en: 'Counting of Votes', title_hi: 'वोटों की गिनती', date: '2024-06-04', desc_en: 'Results are declared', desc_hi: 'परिणाम घोषित किए जाते हैं' }
-];
+import { SpeakButton } from '../components/shared/SpeakButton';
 
 export const TimelinePage = () => {
   const { t, i18n } = useTranslation();
   const [selectedState, setSelectedState] = useState('');
+  const [states, setStates] = useState<any[]>([]);
+  const [timelineEvents, setTimelineEvents] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('/api/states')
+      .then((res) => res.json())
+      .then((data) => setStates(data))
+      .catch((err) => console.error('Error fetching states:', err));
+  }, []);
+
+  useEffect(() => {
+    const url = selectedState ? `/api/timeline?stateId=${selectedState}` : '/api/timeline';
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setTimelineEvents(data))
+      .catch((err) => console.error('Error fetching timeline:', err));
+  }, [selectedState]);
 
   return (
     <div className="max-w-3xl mx-auto py-8">
@@ -29,14 +40,17 @@ export const TimelinePage = () => {
           onChange={(e) => setSelectedState(e.target.value)}
         >
           <option value="">Select State / राज्य चुनें</option>
-          <option value="UP">Uttar Pradesh / उत्तर प्रदेश</option>
-          <option value="MH">Maharashtra / महाराष्ट्र</option>
+          {states.map((state) => (
+            <option key={state.id} value={state.id}>
+              {i18n.language === 'en' ? state.name_en : state.name_hi}
+            </option>
+          ))}
         </select>
       </div>
 
       <div className="relative border-l-2 border-primary ml-4 md:ml-8 space-y-8">
-        {SAMPLE_TIMELINE.map((event, index) => {
-          const isPast = dayjs(event.date).isBefore(dayjs());
+        {timelineEvents.map((event) => {
+          const isPast = dayjs(event.event_date).isBefore(dayjs());
           return (
             <div key={event.id} className="relative pl-8 md:pl-10">
               {/* Timeline dot */}
@@ -48,17 +62,20 @@ export const TimelinePage = () => {
                     {i18n.language === 'en' ? event.title_en : event.title_hi}
                   </h3>
                   <span className={`text-sm font-medium px-3 py-1 rounded-full ${isPast ? 'bg-muted text-muted-foreground' : 'bg-secondary/10 text-secondary'}`}>
-                    {dayjs(event.date).format('DD MMM YYYY')}
+                    {dayjs(event.event_date).format('DD MMM YYYY')}
                   </span>
                 </div>
-                <p className="text-muted-foreground">
-                  {i18n.language === 'en' ? event.desc_en : event.desc_hi}
-                </p>
+                <div className="flex gap-2 items-start justify-between">
+                  <p className="text-muted-foreground flex-1">
+                    {i18n.language === 'en' ? event.description_en : event.description_hi}
+                  </p>
+                  <SpeakButton text={i18n.language === 'en' ? event.description_en : event.description_hi} lang={i18n.language === 'hi' ? 'hi' : 'en'} />
+                </div>
                 
                 {!isPast && (
                   <div className="mt-4 flex items-center gap-2 text-sm text-primary font-medium">
                     <AlertCircle className="w-4 h-4" /> 
-                    {dayjs(event.date).diff(dayjs(), 'day')} days remaining
+                    {dayjs(event.event_date).diff(dayjs(), 'day')} days remaining
                   </div>
                 )}
               </div>

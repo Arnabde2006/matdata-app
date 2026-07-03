@@ -97,5 +97,81 @@ describe('Server API Endpoints', () => {
     expect(res.body.isDemoData).toBe(true);
     expect(res.body.epicNumber).toBe('ABC1234567');
   });
+
+  // Feature 1 - States List Endpoint
+  it('GET /api/states should return 200 and a list of states', async () => {
+    const res = await request(app).get('/api/states');
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.length).toBeGreaterThan(0);
+    expect(res.body[0].name_en).toBeDefined();
+  });
+
+  // Feature 1 - Timeline Endpoint (Passing)
+  it('GET /api/timeline should return 200 and timeline events', async () => {
+    const res = await request(app).get('/api/timeline');
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.length).toBeGreaterThan(0);
+  });
+
+  // Feature 1 - Timeline Endpoint with stateId (Passing)
+  it('GET /api/timeline?stateId=1 should return 200 and filtered timeline events', async () => {
+    const res = await request(app).get('/api/timeline?stateId=1');
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+  });
+
+  // Feature 1 - Timeline Endpoint with invalid stateId format (Failing)
+  it('GET /api/timeline?stateId=abc should return 400', async () => {
+    const res = await request(app).get('/api/timeline?stateId=abc');
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBeDefined();
+  });
+
+  // Feature 1 - Timeline Endpoint with negative stateId (Failing)
+  it('GET /api/timeline?stateId=-1 should return 400', async () => {
+    const res = await request(app).get('/api/timeline?stateId=-1');
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBeDefined();
+  });
+
+  // Feature 4 - Candidates list
+  it('GET /api/candidates should return 200 and all candidates', async () => {
+    const res = await request(app).get('/api/candidates');
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.length).toBeGreaterThan(0);
+    expect(res.body[0].party).toBeDefined();
+  });
+
+  // Feature 4 - Candidates comparison (Passing)
+  it('GET /api/candidates/compare?ids=1,2 should return 200 and candidates matching ids', async () => {
+    const res = await request(app).get('/api/candidates/compare?ids=1,2');
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.length).toBe(2);
+  });
+
+  // Feature 4 - Candidates comparison with too few IDs (Failing)
+  it('GET /api/candidates/compare?ids=1 should return 400', async () => {
+    const res = await request(app).get('/api/candidates/compare?ids=1');
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBeDefined();
+  });
+
+  // Feature 4 - Candidates comparison with too many IDs (Failing)
+  it('GET /api/candidates/compare?ids=1,2,3,4 should return 400', async () => {
+    const res = await request(app).get('/api/candidates/compare?ids=1,2,3,4');
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBeDefined();
+  });
+
+  // Feature 4 - Candidates comparison with malformed IDs (Failing)
+  it('GET /api/candidates/compare?ids=abc,2 should return 400', async () => {
+    const res = await request(app).get('/api/candidates/compare?ids=abc,2');
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBeDefined();
+  });
 });
 

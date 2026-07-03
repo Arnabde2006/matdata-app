@@ -11,3 +11,59 @@ export const boothSchema = z.object({
 
 export type ChatInput = z.infer<typeof chatSchema>;
 export type BoothInput = z.infer<typeof boothSchema>;
+
+export const timelineQuerySchema = z.object({
+  stateId: z
+    .string()
+    .optional()
+    .refine((val) => {
+      if (val === undefined || val.trim() === '') return true;
+      const parsed = Number(val);
+      return Number.isInteger(parsed) && parsed > 0;
+    }, {
+      message: 'stateId must be a positive integer',
+    })
+    .transform((val) => {
+      if (val === undefined || val.trim() === '') return undefined;
+      return parseInt(val, 10);
+    }),
+});
+
+export const candidateQuerySchema = z.object({
+  constituencyId: z
+    .string()
+    .optional()
+    .refine((val) => {
+      if (val === undefined || val.trim() === '') return true;
+      const parsed = Number(val);
+      return Number.isInteger(parsed) && parsed > 0;
+    }, {
+      message: 'constituencyId must be a positive integer',
+    })
+    .transform((val) => {
+      if (val === undefined || val.trim() === '') return undefined;
+      return parseInt(val, 10);
+    }),
+});
+
+export const candidateCompareSchema = z.object({
+  ids: z
+    .string()
+    .min(1, 'Candidate IDs are required')
+    .refine((val) => {
+      const parts = val.split(',');
+      if (parts.length < 2 || parts.length > 3) return false;
+      return parts.every((part) => {
+        const num = Number(part);
+        return Number.isInteger(num) && num > 0;
+      });
+    }, {
+      message: 'Must provide between 2 and 3 positive integer candidate IDs separated by commas',
+    })
+    .transform((val) => {
+      return val.split(',').map((part) => parseInt(part, 10));
+    }),
+});
+
+
+

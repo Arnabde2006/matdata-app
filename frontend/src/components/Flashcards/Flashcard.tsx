@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { RefreshCcw, CheckCircle2 } from 'lucide-react';
+import { SpeakButton } from '../shared/SpeakButton';
 
 interface FlashcardData {
   id: number;
@@ -40,7 +41,10 @@ export const Flashcard = ({ card, onNext }: Props) => {
         {/* Front */}
         <div className="absolute inset-0 backface-hidden bg-card rounded-xl shadow-lg border border-border p-6 flex flex-col items-center justify-center text-center">
           <span className="text-sm text-muted-foreground uppercase tracking-wider mb-4">{card.category}</span>
-          <h3 className="text-3xl font-heading font-bold text-accent mb-2">{term}</h3>
+          <div className="flex items-center gap-2 mb-2">
+            <h3 className="text-3xl font-heading font-bold text-accent">{term}</h3>
+            <SpeakButton text={term} lang={i18n.language === 'hi' ? 'hi' : 'en'} />
+          </div>
           <p className="text-lg text-muted-foreground">{otherTerm}</p>
           <div className="mt-auto text-sm text-muted-foreground flex items-center gap-2">
             <RefreshCcw className="w-4 h-4" /> Tap to flip
@@ -50,7 +54,10 @@ export const Flashcard = ({ card, onNext }: Props) => {
         {/* Back */}
         <div className="absolute inset-0 backface-hidden rotate-y-180 bg-primary text-primary-foreground rounded-xl shadow-lg p-6 flex flex-col items-center justify-center text-center overflow-y-auto">
           <p className="text-xl mb-4 font-medium">{definition}</p>
-          <p className="text-md opacity-90">{otherDefinition}</p>
+          <p className="text-md opacity-90 mb-4">{otherDefinition}</p>
+          <div className="bg-white/10 rounded-full p-0.5 text-white hover:bg-white/20 transition-colors">
+            <SpeakButton text={definition} lang={i18n.language === 'hi' ? 'hi' : 'en'} />
+          </div>
         </div>
       </motion.div>
 

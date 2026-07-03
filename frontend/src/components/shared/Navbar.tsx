@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LanguageToggle } from './LanguageToggle';
-import { Vote, MessageSquare, BookOpen, Users, MapPin } from 'lucide-react';
+import { Vote, MessageSquare, BookOpen, Users, MapPin, ShieldCheck } from 'lucide-react';
 
 export const Navbar = () => {
   const { t } = useTranslation();
@@ -20,6 +20,9 @@ export const Navbar = () => {
         </Link>
         
         <nav className="hidden md:flex items-center gap-6">
+          <Link to="/eligibility" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
+            <ShieldCheck className="w-4 h-4"/> {t('nav_eligibility')}
+          </Link>
           <Link to="/timeline" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
             {t('nav_timeline')}
           </Link>

@@ -9,6 +9,8 @@ const FlashcardsPage = lazy(() => import('./pages/FlashcardsPage').then(module =
 const CandidatesPage = lazy(() => import('./pages/CandidatesPage').then(module => ({ default: module.CandidatesPage })))
 const BoothFinderPage = lazy(() => import('./pages/BoothFinderPage').then(module => ({ default: module.BoothFinderPage })))
 const ChatbotPage = lazy(() => import('./pages/ChatbotPage').then(module => ({ default: module.ChatbotPage })))
+const EligibilityCheckerPage = lazy(() => import('./pages/EligibilityCheckerPage').then(module => ({ default: module.EligibilityCheckerPage })))
+const CandidateComparePage = lazy(() => import('./pages/CandidateComparePage').then(module => ({ default: module.CandidateComparePage })))
 
 function App() {
   return (
@@ -21,8 +23,10 @@ function App() {
             <Route path="/timeline" element={<TimelinePage />} />
             <Route path="/learn" element={<FlashcardsPage />} />
             <Route path="/candidates" element={<CandidatesPage />} />
+            <Route path="/candidates/compare" element={<CandidateComparePage />} />
             <Route path="/booth" element={<BoothFinderPage />} />
             <Route path="/chatbot" element={<ChatbotPage />} />
+            <Route path="/eligibility" element={<EligibilityCheckerPage />} />
           </Routes>
         </Suspense>
       </main>

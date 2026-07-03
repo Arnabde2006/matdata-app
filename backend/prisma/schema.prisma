@@ -14,6 +14,7 @@ model State {
   constituencies_count Int
   constituencies       Constituency[]
   elections            Election[]
+  timelineEvents       TimelineEvent[]
 }
 
 model Constituency {
@@ -88,3 +89,16 @@ model UserProgress {
 
   @@unique([user_id, flashcard_id])
 }
+
+model TimelineEvent {
+  id             Int      @id @default(autoincrement())
+  state_id       Int?     // null = national event
+  title_en       String
+  title_hi       String
+  description_en String
+  description_hi String
+  event_date     DateTime
+  event_type     String
+  state          State?   @relation(fields: [state_id], references: [id])
+}
+
