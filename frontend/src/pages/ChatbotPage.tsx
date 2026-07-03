@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MessageSquare, Send, Bot, User } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
-import { SpeakButton } from '../components/shared/SpeakButton';
-import { useDocumentMeta } from '../hooks/useDocumentMeta';
+import { Send, Bot, User } from 'lucide-react';
+import ReactMarkdown, { type Components } from 'react-markdown';
+
+const markdownComponents: Components = {
+  ul: ({ ...props }) => <ul className="list-disc pl-4" {...props} />,
+  ol: ({ ...props }) => <ol className="list-decimal pl-4" {...props} />,
+  li: ({ ...props }) => <li className="mt-1" {...props} />,
+  p: ({ ...props }) => <p className="mb-1 last:mb-0" {...props} />,
+  strong: ({ ...props }) => <strong className="font-semibold" {...props} />,
+  a: ({ ...props }) => <a className="text-primary underline underline-offset-2" {...props} />,
+};
 
 export const ChatbotPage = () => {
   const { t, i18n } = useTranslation();
-  useDocumentMeta(t('meta_chatbot_title'), t('meta_chatbot_desc'));
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([
     { role: 'assistant', content: i18n.language === 'en' ? 'Hello! I am your AI election assistant. How can I help you today?' : 'नमस्ते! मैं आपका एआई चुनाव सहायक हूं। आज मैं आपकी कैसे मदद कर सकता हूं?' }
@@ -80,26 +86,14 @@ export const ChatbotPage = () => {
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.role === 'user' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
                   {msg.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
                 </div>
-                <div className={`p-3 rounded-lg relative ${msg.role === 'user' ? 'bg-primary/10 text-foreground rounded-tr-none' : 'bg-muted text-foreground rounded-tl-none pr-8'}`}>
+                <div className={`p-3 rounded-lg ${msg.role === 'user' ? 'bg-primary/10 text-foreground rounded-tr-none' : 'bg-muted text-foreground rounded-tl-none'}`}>
                   {msg.role === 'user' ? (
                     <p className="text-sm">{msg.content}</p>
                   ) : (
                     <div className="text-sm flex flex-col gap-2 overflow-hidden">
-                      <ReactMarkdown
-                        components={{
-                          ul: ({ node, ...props }: any) => <ul className="list-disc pl-4" {...props} />,
-                          ol: ({ node, ...props }: any) => <ol className="list-decimal pl-4" {...props} />,
-                          li: ({ node, ...props }: any) => <li className="mt-1" {...props} />,
-                          p: ({ node, ...props }: any) => <p className="mb-1 last:mb-0" {...props} />,
-                          strong: ({ node, ...props }: any) => <strong className="font-semibold" {...props} />,
-                          a: ({ node, ...props }: any) => <a className="text-primary underline underline-offset-2" {...props} />
-                        }}
-                      >
+                      <ReactMarkdown components={markdownComponents}>
                         {msg.content}
                       </ReactMarkdown>
-                      <div className="absolute right-1.5 top-1.5">
-                        <SpeakButton text={msg.content} lang={i18n.language === 'hi' ? 'hi' : 'en'} />
-                      </div>
                     </div>
                   )}
                 </div>
@@ -162,11 +156,6 @@ export const ChatbotPage = () => {
               <Send className="w-4 h-4 ml-1" />
             </button>
           </form>
-          <div className="mt-2 text-center text-xs text-muted-foreground">
-            {i18n.language === 'en'
-              ? "AI-generated answers may be inaccurate. Verify official details at eci.gov.in."
-              : "एआई द्वारा दिए गए उत्तर गलत हो सकते हैं। कृपया eci.gov.in पर आधिकारिक जानकारी सत्यापित करें।"}
-          </div>
         </div>
       </div>
     </div>

@@ -21,7 +21,6 @@ describe('Navbar Component', () => {
   it('renders language toggle and translate widget', () => {
     const { container } = render(<BrowserRouter><Navbar /></BrowserRouter>);
     expect(screen.getByRole('button', { name: /toggle language/i })).toBeInTheDocument();
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
     expect(container.querySelector('#google_translate_element')).toBeInTheDocument();
   });
 });

@@ -9,7 +9,7 @@ vi.mock('react-i18next', () => ({
 
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, onClick, ...props }: any) => (
+    div: ({ children, onClick, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
       <div onClick={onClick} data-testid="motion-div" {...props}>
         {children}
       </div>
