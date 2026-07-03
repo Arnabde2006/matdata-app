@@ -16,31 +16,40 @@ export const BoothFinderPage = () => {
   const [epicNumber, setEpicNumber] = useState('');
   const [boothData, setBoothData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!epicNumber) return;
     setIsLoading(true);
+    setError('');
+    setBoothData(null);
     try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent('Varanasi Uttar Pradesh')}&format=json&limit=1`);
-      const data = await response.json();
-      let lat = 25.3176;
-      let lon = 82.9739;
-      if (data && data.length > 0) {
-        lat = parseFloat(data[0].lat);
-        lon = parseFloat(data[0].lon);
-      }
-      setBoothData({
-        name: 'Govt Primary School, Room 2',
-        address: 'Sector 4, Main Road, Varanasi, UP 221005',
-        partNumber: '142',
-        serialNumber: '567',
-        facilities: ['Wheelchair Ramp', 'Drinking Water', 'Washroom'],
-        lat,
-        lon
+      const response = await fetch('/api/booth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ epicNumber }),
       });
-    } catch (error) {
-      console.error('Error:', error);
+      const data = await response.json();
+      if (response.ok) {
+        setBoothData({
+          name: data.boothName,
+          address: data.address,
+          partNumber: data.partNumber,
+          serialNumber: data.serialNumber,
+          facilities: data.facilities,
+          lat: data.latitude,
+          lon: data.longitude,
+          isDemoData: data.isDemoData
+        });
+      } else {
+        throw new Error(data.error || 'Please enter a valid EPIC number (3 letters + 7 digits)');
+      }
+    } catch (err: any) {
+      console.error('Error:', err);
+      setError(err.message || 'Please enter a valid EPIC number (3 letters + 7 digits)');
     } finally {
       setIsLoading(false);
     }
@@ -67,7 +76,7 @@ export const BoothFinderPage = () => {
                   placeholder="E.G. ABC1234567"
                   className="w-full px-4 py-2 border border-input bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-primary uppercase"
                   value={epicNumber}
-                  onChange={(e) => setEpicNumber(e.target.value)}
+                  onChange={(e) => setEpicNumber(e.target.value.toUpperCase())}
                 />
               </div>
               <button
@@ -81,12 +90,22 @@ export const BoothFinderPage = () => {
           </div>
         </div>
         <div className="md:col-span-3">
-          {boothData ? (
+          {error ? (
+            <div className="h-full bg-destructive/10 border border-dashed border-destructive/20 rounded-xl flex flex-col items-center justify-center p-8 text-center text-destructive">
+              <p className="font-semibold mb-2">Search Failed</p>
+              <p className="text-sm">{error}</p>
+            </div>
+          ) : boothData ? (
             <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden flex flex-col h-full">
               <div className="bg-secondary text-white p-4">
                 <h3 className="font-bold text-lg">Your Polling Station</h3>
               </div>
               <div className="p-6 flex-1 space-y-4">
+                {boothData.isDemoData && (
+                  <div className="p-4 bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 rounded-lg text-sm">
+                    This is demo data. To find your actual polling booth, please search on the official <a href="https://electoralsearch.eci.gov.in" target="_blank" rel="noopener noreferrer" className="underline font-medium hover:text-amber-800 dark:hover:text-amber-300">ECI Electoral Search portal</a>.
+                  </div>
+                )}
                 <div>
                   <h4 className="text-sm text-muted-foreground font-medium mb-1">Booth Name & Address</h4>
                   <p className="font-bold text-lg text-foreground">{boothData.name}</p>
@@ -141,3 +160,4 @@ export const BoothFinderPage = () => {
     </div>
   );
 };
+

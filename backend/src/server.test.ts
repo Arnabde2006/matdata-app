@@ -1,6 +1,6 @@
+/// <reference types="jest" />
 import request from 'supertest';
 import { app } from './server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Mock the Gemini API call to prevent real requests
 jest.mock('@google/generative-ai', () => ({
@@ -37,9 +37,12 @@ describe('Server API Endpoints', () => {
 
   // Test 3: CORS headers presence
   it('should include CORS headers in responses', async () => {
-    const res = await request(app).get('/api/health');
+    const res = await request(app)
+      .get('/api/health')
+      .set('Origin', 'http://localhost:5173');
     expect(res.headers['access-control-allow-origin']).toBeDefined();
   });
+
 
   // Test 4: Rate Limiting
   it('should be subject to rate limiting', async () => {
@@ -56,4 +59,43 @@ describe('Server API Endpoints', () => {
       .send('{"message": "Hello", "language": "en"'); // malformed JSON
     expect(res.status).toBe(400); // Express json parser typically throws 400 for bad JSON
   });
+
+  // Test 6: chat message empty
+  it('should return 400 for POST /api/chat with empty message', async () => {
+    const res = await request(app)
+      .post('/api/chat')
+      .send({ message: '', language: 'en' });
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBeDefined();
+  });
+
+  // Test 7: chat message over 500 chars
+  it('should return 400 for POST /api/chat with message over 500 characters', async () => {
+    const longMessage = 'a'.repeat(501);
+    const res = await request(app)
+      .post('/api/chat')
+      .send({ message: longMessage, language: 'en' });
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBeDefined();
+  });
+
+  // Test 8: booth search malformed epicNumber
+  it('should return 400 for POST /api/booth with malformed epicNumber', async () => {
+    const res = await request(app)
+      .post('/api/booth')
+      .send({ epicNumber: '123' });
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBeDefined();
+  });
+
+  // Test 9: booth search valid epicNumber
+  it('should return 200 and isDemoData: true for POST /api/booth with valid epicNumber', async () => {
+    const res = await request(app)
+      .post('/api/booth')
+      .send({ epicNumber: 'ABC1234567' });
+    expect(res.status).toBe(200);
+    expect(res.body.isDemoData).toBe(true);
+    expect(res.body.epicNumber).toBe('ABC1234567');
+  });
 });
+

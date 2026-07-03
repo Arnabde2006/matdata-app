@@ -156,6 +156,11 @@ export const ChatbotPage = () => {
               <Send className="w-4 h-4 ml-1" />
             </button>
           </form>
+          <div className="mt-2 text-center text-xs text-muted-foreground">
+            {i18n.language === 'en'
+              ? "AI-generated answers may be inaccurate. Verify official details at eci.gov.in."
+              : "एआई द्वारा दिए गए उत्तर गलत हो सकते हैं। कृपया eci.gov.in पर आधिकारिक जानकारी सत्यापित करें।"}
+          </div>
         </div>
       </div>
     </div>

@@ -37,25 +37,22 @@ Built a full-stack bilingual (Hindi + English) web platform with:
 - **i18n:** react-i18next (Hindi + English)
 
 ## Google Services Used
-- **Gemini 2.5 Flash API** — Powers the bilingual AI election assistant
-- **Google Cloud Run** — Serverless container deployment in Mumbai region
-- **Google Cloud Build** — Automated container builds and deployments
-- **Google Artifact Registry** — Docker container image storage
-
-## Assumptions Made
-- Sample/mock data used for candidate information (real ECI API integration planned)
-- Booth finder uses demo data with real map coordinates for Varanasi
-- Hindi translations cover major UI elements (full translation in progress)
-- SQLite used for development (PostgreSQL for production)
-
-## Google Services Used
 This application leverages multiple Google Services for enhanced functionality:
-- **Cloud Run**: Target platform for scalable containerized backend and frontend deployment.
-- **Gemini API**: Powers the AI chatbot assistant to answer election-related queries.
+- **Gemini API (Gemini 2.5 Flash)** — Powers the bilingual AI election assistant to answer election-related queries.
+- **Google Cloud Run** — Serverless container deployment in asia-south1 (Mumbai) region.
+- **Google Cloud Build** — Automated container builds and deployments.
+- **Google Artifact Registry** — Docker container image storage.
 - **Google Analytics 4 (GA4)**: Tracks pageviews and user interactions with tracking ID `G-MATDATA2026`.
 - **Firebase**: SDK integrated for future robust storage of user progress and chat histories via Firestore.
 - **Google Fonts API**: Provides high-quality typography using Inter and Noto Sans Devanagari.
 - **Google Translate API**: Embeds a multi-lingual translation widget in the navigation bar.
+
+## Assumptions Made
+- Sample/mock data used for candidate information (real ECI API integration planned)
+- Booth finder uses demo data with real map coordinates for Varanasi, and both booth results and chatbot answers now display in-app disclaimers pointing to official ECI sources.
+- Hindi translations cover major UI elements (full translation in progress)
+- SQLite used for development (PostgreSQL for production)
+
 
 ## License
 MIT License
