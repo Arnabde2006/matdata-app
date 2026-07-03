@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { MapPin, Search, Navigation } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -13,6 +14,7 @@ L.Icon.Default.mergeOptions({
 
 export const BoothFinderPage = () => {
   const { t } = useTranslation();
+  useDocumentMeta(t('meta_booth_title'), t('meta_booth_desc'));
   const [epicNumber, setEpicNumber] = useState('');
   const [boothData, setBoothData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);

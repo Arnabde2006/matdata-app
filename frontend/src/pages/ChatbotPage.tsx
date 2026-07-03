@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { MessageSquare, Send, Bot, User } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { SpeakButton } from '../components/shared/SpeakButton';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 export const ChatbotPage = () => {
   const { t, i18n } = useTranslation();
+  useDocumentMeta(t('meta_chatbot_title'), t('meta_chatbot_desc'));
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([
     { role: 'assistant', content: i18n.language === 'en' ? 'Hello! I am your AI election assistant. How can I help you today?' : 'नमस्ते! मैं आपका एआई चुनाव सहायक हूं। आज मैं आपकी कैसे मदद कर सकता हूं?' }

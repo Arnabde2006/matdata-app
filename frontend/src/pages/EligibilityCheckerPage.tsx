@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ShieldCheck, ArrowRight, HelpCircle, Check, X, ExternalLink } from 'lucide-react';
 import { SpeakButton } from '../components/shared/SpeakButton';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 export const EligibilityCheckerPage = () => {
   const { t, i18n } = useTranslation();
+  useDocumentMeta(t('meta_eligibility_title'), t('meta_eligibility_desc'));
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<number, boolean>>({});
 

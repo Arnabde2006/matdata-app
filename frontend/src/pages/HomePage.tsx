@@ -2,9 +2,12 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Calendar, BookOpen, Users, MapPin, MessageSquare, ArrowRight } from 'lucide-react';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 export const HomePage = () => {
   const { t } = useTranslation();
+  useDocumentMeta(t('meta_home_title'), t('meta_home_desc'));
+
 
   const features = [
     { icon: <Calendar className="w-6 h-6 text-primary" />, title: t('nav_timeline'), desc: "Track election phases, registration dates, and result days.", link: "/timeline" },

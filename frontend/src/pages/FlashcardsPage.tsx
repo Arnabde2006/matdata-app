@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { Flashcard } from '../components/Flashcards/Flashcard';
 import { BookOpen, RefreshCw } from 'lucide-react';
 import { getDueCards, recordAnswer } from '../lib/spacedRepetition';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 export const FlashcardsPage = () => {
   const { t } = useTranslation();
+  useDocumentMeta(t('meta_learn_title'), t('meta_learn_desc'));
   const [allCards, setAllCards] = useState<any[]>([]);
   const [progressMap, setProgressMap] = useState<Record<string, any>>({});
   const [dueCards, setDueCards] = useState<any[]>([]);

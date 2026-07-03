@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { Calendar, AlertCircle } from 'lucide-react';
 import dayjs from 'dayjs';
 import { SpeakButton } from '../components/shared/SpeakButton';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 export const TimelinePage = () => {
   const { t, i18n } = useTranslation();
+  useDocumentMeta(t('meta_timeline_title'), t('meta_timeline_desc'));
   const [selectedState, setSelectedState] = useState('');
   const [states, setStates] = useState<any[]>([]);
   const [timelineEvents, setTimelineEvents] = useState<any[]>([]);

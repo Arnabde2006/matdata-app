@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Users, Search, Briefcase, GraduationCap, AlertTriangle, CheckSquare, Square } from 'lucide-react';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 const getSymbolUrl = (symbolName: string) => {
   const urls: Record<string, string> = {
@@ -14,6 +15,7 @@ const getSymbolUrl = (symbolName: string) => {
 
 export const CandidatesPage = () => {
   const { t, i18n } = useTranslation();
+  useDocumentMeta(t('meta_candidates_title'), t('meta_candidates_desc'));
   const [searchTerm, setSearchTerm] = useState('');
   const [candidates, setCandidates] = useState<any[]>([]);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);

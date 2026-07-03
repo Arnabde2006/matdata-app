@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="#000080" />
+  
+  <!-- Ballot box shape in White with rounded corners -->
+  <rect x="128" y="180" width="256" height="200" rx="20" ry="20" fill="#ffffff" stroke="#FF9933" stroke-width="16" />
+  
+  <!-- Saffron Ballot Slot at the top -->
+  <rect x="160" y="140" width="192" height="40" rx="10" ry="10" fill="#FF9933" />
+  
+  <!-- Slot opening inside the saffron band -->
+  <rect x="180" y="155" width="152" height="10" rx="5" ry="5" fill="#000080" />
+  
+  <!-- Paper being inserted into the slot -->
+  <path d="M 216 110 L 296 110 L 296 170 L 216 170 Z" fill="#ffffff" stroke="#138808" stroke-width="8" />
+  
+  <!-- Green checkmark on the ballot paper -->
+  <path d="M 236 140 L 250 154 L 276 128" fill="none" stroke="#138808" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Tricolor horizontal line on the box (Saffron / White / Green) -->
+  <rect x="160" y="240" width="192" height="12" fill="#FF9933" />
+  <rect x="160" y="252" width="192" height="12" fill="#ffffff" />
+  <rect x="160" y="264" width="192" height="12" fill="#138808" />
+  
+  <!-- Ashoka Chakra wheel in the center of tricolor -->
+  <circle cx="256" cy="258" r="10" fill="none" stroke="#000080" stroke-width="2" />
+  <circle cx="256" cy="258" r="2" fill="#000080" />
+</svg>

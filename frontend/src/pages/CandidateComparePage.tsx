@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Users, AlertTriangle } from 'lucide-react';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 const getSymbolUrl = (symbolName: string) => {
   const urls: Record<string, string> = {
@@ -13,7 +14,8 @@ const getSymbolUrl = (symbolName: string) => {
 };
 
 export const CandidateComparePage = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
+  useDocumentMeta(t('meta_compare_title'), t('meta_compare_desc'));
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [candidates, setCandidates] = useState<any[]>([]);

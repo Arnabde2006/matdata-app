@@ -4,6 +4,10 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import './i18n/config'
 import './index.css'
+import { initAnalyticsIfConsented } from './lib/consent'
+
+// Initialize Google Analytics if the user has already consented
+initAnalyticsIfConsented();
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
