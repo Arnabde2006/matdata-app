@@ -1,3 +1,19 @@
+export interface Flashcard {
+  id: number;
+  term_en: string;
+  term_hi: string;
+  definition_en: string;
+  definition_hi: string;
+  category: string;
+}
+
+export interface FlashcardProgress {
+  masteryLevel: number;
+  nextReviewDate: string;
+}
+
+export type ProgressMap = Record<string, FlashcardProgress>;
+
 const INTERVALS = [1, 3, 7, 14, 30, 90];
 
 export function nextInterval(masteryLevel: number, wasCorrect: boolean): number {
@@ -6,7 +22,7 @@ export function nextInterval(masteryLevel: number, wasCorrect: boolean): number 
   return INTERVALS[level];
 }
 
-export function getDueCards(cards: any[], progressMap: Record<string, any>) {
+export function getDueCards(cards: Flashcard[], progressMap: ProgressMap): Flashcard[] {
   const todayStr = new Date().toISOString().split('T')[0];
 
   return cards.filter((card) => {
@@ -17,9 +33,9 @@ export function getDueCards(cards: any[], progressMap: Record<string, any>) {
   });
 }
 
-export function recordAnswer(cardId: number, wasCorrect: boolean) {
+export function recordAnswer(cardId: number, wasCorrect: boolean): ProgressMap {
   const stored = localStorage.getItem('matdata_flashcard_progress');
-  const progressMap = stored ? JSON.parse(stored) : {};
+  const progressMap: ProgressMap = stored ? JSON.parse(stored) : {};
 
   const current = progressMap[cardId] || { masteryLevel: 0, nextReviewDate: '' };
   

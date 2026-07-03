@@ -1,3 +1,10 @@
+declare global {
+  interface Window {
+    dataLayer?: unknown[];
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
 export type ConsentStatus = 'accepted' | 'rejected' | null;
 
 const CONSENT_KEY = 'matdata_cookie_consent';
@@ -19,14 +26,14 @@ export function initAnalyticsIfConsented(): void {
     if (typeof window !== 'undefined') {
       window.dataLayer = window.dataLayer || [];
       if (!window.gtag) {
-        window.gtag = function (...args: any[]) {
+        window.gtag = function (...args: unknown[]) {
           window.dataLayer!.push(args);
         };
       }
       
       console.log('[Consent] Dynamic Google Analytics (GA4) initialization triggered.');
-      window.gtag('js', new Date());
-      window.gtag('config', 'G-MATDATA2026');
+      window.gtag!('js', new Date());
+      window.gtag!('config', 'G-MATDATA2026');
     }
   }
 }

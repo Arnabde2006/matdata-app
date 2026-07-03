@@ -2,22 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Flashcard } from '../components/Flashcards/Flashcard';
 import { BookOpen, RefreshCw } from 'lucide-react';
-import { getDueCards, recordAnswer } from '../lib/spacedRepetition';
+import { getDueCards, recordAnswer, Flashcard as FlashcardType } from '../lib/spacedRepetition';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 export const FlashcardsPage = () => {
   const { t } = useTranslation();
   useDocumentMeta(t('meta_learn_title'), t('meta_learn_desc'));
-  const [allCards, setAllCards] = useState<any[]>([]);
-  const [progressMap, setProgressMap] = useState<Record<string, any>>({});
-  const [dueCards, setDueCards] = useState<any[]>([]);
+  const [allCards, setAllCards] = useState<FlashcardType[]>([]);
+  const [dueCards, setDueCards] = useState<FlashcardType[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const stored = localStorage.getItem('matdata_flashcard_progress');
     const pMap = stored ? JSON.parse(stored) : {};
-    setProgressMap(pMap);
 
     fetch('/api/flashcards')
       .then((res) => res.json())
@@ -38,7 +36,6 @@ export const FlashcardsPage = () => {
     const currentCard = dueCards[currentIndex];
 
     const updatedMap = recordAnswer(currentCard.id, knewIt);
-    setProgressMap(updatedMap);
 
     const updatedDue = getDueCards(allCards, updatedMap);
     setDueCards(updatedDue);
@@ -56,7 +53,6 @@ export const FlashcardsPage = () => {
 
   const handleReset = () => {
     localStorage.removeItem('matdata_flashcard_progress');
-    setProgressMap({});
     const due = getDueCards(allCards, {});
     setDueCards(due);
     setCurrentIndex(0);

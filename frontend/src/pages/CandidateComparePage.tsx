@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Users, AlertTriangle } from 'lucide-react';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
+import { Candidate } from '../types/candidate';
 
 const getSymbolUrl = (symbolName: string) => {
   const urls: Record<string, string> = {
@@ -18,7 +19,7 @@ export const CandidateComparePage = () => {
   useDocumentMeta(t('meta_compare_title'), t('meta_compare_desc'));
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [candidates, setCandidates] = useState<any[]>([]);
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -99,7 +100,7 @@ export const CandidateComparePage = () => {
                 <th key={candidate.id} className="p-4 font-bold text-base text-foreground w-1/4 text-center">
                   <div className="flex flex-col items-center gap-3">
                     <img
-                      src={candidate.photo_url}
+                      src={candidate.photo_url || undefined}
                       alt={candidate.name_en}
                       className="w-16 h-16 rounded-full object-cover border-2 border-primary/20"
                     />

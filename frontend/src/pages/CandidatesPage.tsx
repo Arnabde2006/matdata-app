@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Users, Search, Briefcase, GraduationCap, AlertTriangle, CheckSquare, Square } from 'lucide-react';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
+import { Candidate } from '../types/candidate';
 
 const getSymbolUrl = (symbolName: string) => {
   const urls: Record<string, string> = {
@@ -17,7 +18,7 @@ export const CandidatesPage = () => {
   const { t, i18n } = useTranslation();
   useDocumentMeta(t('meta_candidates_title'), t('meta_candidates_desc'));
   const [searchTerm, setSearchTerm] = useState('');
-  const [candidates, setCandidates] = useState<any[]>([]);
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -101,7 +102,7 @@ export const CandidatesPage = () => {
                     </span>
                   </div>
                   <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-border shrink-0">
-                    <img src={candidate.photo_url} alt={candidate.name_en} className="w-full h-full object-cover" />
+                    <img src={candidate.photo_url || undefined} alt={candidate.name_en} className="w-full h-full object-cover" />
                   </div>
                 </div>
 
