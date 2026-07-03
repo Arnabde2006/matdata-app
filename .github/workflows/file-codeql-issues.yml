@@ -15,6 +15,15 @@ jobs:
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion != 'cancelled' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Ensure required labels exist
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          gh label create "security" --repo "$REPO" --color "d73a4a" --description "Security-related issue" --force
+          gh label create "code-scanning" --repo "$REPO" --color "0e8a16" --description "Filed from a CodeQL code scanning alert" --force
+
       - name: Fetch open code scanning alerts and file issues
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -50,18 +59,20 @@ jobs:
               continue
             fi
             echo "Filing issue for alert #${alert_number}..."
-            body="**Severity:** ${severity}
-            **Location:** \`${file_path}\` line ${start_line}
-            ${rule_desc}
-            View full details on the [Security tab](${alert_url}).
-            ---
-            This issue was filed automatically from an open CodeQL code scanning alert. It has not been fixed — this ticket exists purely to track it. Close this issue once the alert is resolved or dismissed.
-            ${dedupe_marker}"
-            body=$(printf "%s\n" "$body" | sed 's/^            //')
-
+            body_file=$(mktemp)
+            {
+              printf '**Severity:** %s\n' "$severity"
+              printf '**Location:** `%s` line %s\n\n' "$file_path" "$start_line"
+              printf '%s\n\n' "$rule_desc"
+              printf 'View full details on the [Security tab](%s).\n\n' "$alert_url"
+              printf -- '---\n'
+              printf 'This issue was filed automatically from an open CodeQL code scanning alert. It has not been fixed — this ticket exists purely to track it. Close this issue once the alert is resolved or dismissed.\n\n'
+              printf '%s\n' "$dedupe_marker"
+            } > "$body_file"
             gh issue create \
               --repo "$REPO" \
               --title "[CodeQL] ${rule_desc} (${file_path}:${start_line})" \
               --label "security,code-scanning" \
-              --body "$body"
+              --body-file "$body_file"
+            rm -f "$body_file"
           done
