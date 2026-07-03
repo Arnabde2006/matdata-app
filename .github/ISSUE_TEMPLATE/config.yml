@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability (do NOT open manually)
+    url: https://github.com/Arnabde2006/matdata-app/security/code-scanning
+    about: Security alerts are filed automatically by our CodeQL sync workflow. Check the Security tab instead of opening a manual issue.
