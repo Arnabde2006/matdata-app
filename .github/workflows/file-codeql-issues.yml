@@ -1,0 +1,67 @@
+name: File issues for code scanning alerts
+on:
+  workflow_run:
+    workflows: ["CodeQL"]
+    types: [completed]
+  workflow_dispatch: {} # allows manually triggering a run from the Actions tab for testing
+permissions:
+  contents: read
+  security-events: read
+  issues: write
+jobs:
+  sync-alerts-to-issues:
+    # Only run if the CodeQL workflow that triggered this actually completed
+    # (not cancelled), or if manually triggered.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion != 'cancelled' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch open code scanning alerts and file issues
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          echo "Fetching open code scanning alerts..."
+          alerts=$(gh api "repos/${REPO}/code-scanning/alerts" --paginate -q '.[] | select(.state=="open")' | jq -s '.')
+          count=$(echo "$alerts" | jq 'length')
+          echo "Found $count open alert(s)."
+          if [ "$count" -eq 0 ]; then
+            echo "Nothing to do."
+            exit 0
+          fi
+          for row in $(echo "$alerts" | jq -r '.[] | @base64'); do
+            _jq() { echo "$row" | base64 --decode | jq -r "$1"; }
+            alert_number=$(_jq '.number')
+            rule_desc=$(_jq '.rule.description')
+            severity=$(_jq '.rule.security_severity_level // .rule.severity // "unknown"')
+            file_path=$(_jq '.most_recent_instance.location.path')
+            start_line=$(_jq '.most_recent_instance.location.start_line')
+            alert_url=$(_jq '.html_url')
+            dedupe_marker="[code-scanning-alert-${alert_number}]"
+            existing=$(gh issue list \
+              --repo "$REPO" \
+              --label "code-scanning" \
+              --state all \
+              --search "$dedupe_marker in:body" \
+              --json number \
+              --jq 'length')
+            if [ "$existing" -gt 0 ]; then
+              echo "Issue already exists for alert #${alert_number}, skipping."
+              continue
+            fi
+            echo "Filing issue for alert #${alert_number}..."
+            body="**Severity:** ${severity}
+            **Location:** \`${file_path}\` line ${start_line}
+            ${rule_desc}
+            View full details on the [Security tab](${alert_url}).
+            ---
+            This issue was filed automatically from an open CodeQL code scanning alert. It has not been fixed — this ticket exists purely to track it. Close this issue once the alert is resolved or dismissed.
+            ${dedupe_marker}"
+            body=$(printf "%s\n" "$body" | sed 's/^            //')
+
+            gh issue create \
+              --repo "$REPO" \
+              --title "[CodeQL] ${rule_desc} (${file_path}:${start_line})" \
+              --label "security,code-scanning" \
+              --body "$body"
+          done
