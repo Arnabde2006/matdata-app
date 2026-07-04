@@ -24,4 +24,9 @@ describe('Navbar Component', () => {
     expect(screen.getByRole('button', { name: /toggle language/i })).toBeInTheDocument();
     expect(container.querySelector('#google_translate_element')).toBeInTheDocument();
   });
+
+  it('renders mobile menu trigger button', () => {
+    render(<BrowserRouter><Navbar /></BrowserRouter>);
+    expect(screen.getByRole('button', { name: /open menu/i })).toBeInTheDocument();
+  });
 });
