@@ -14,6 +14,9 @@ const EligibilityCheckerPage = lazy(() => import('./pages/EligibilityCheckerPage
 const CandidateComparePage = lazy(() => import('./pages/CandidateComparePage').then(module => ({ default: module.CandidateComparePage })))
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage').then(module => ({ default: module.PrivacyPolicyPage })))
 const CookiePolicyPage = lazy(() => import('./pages/CookiePolicyPage').then(module => ({ default: module.CookiePolicyPage })))
+const ElectionViewerPage = lazy(() => import('./pages/ElectionViewerPage').then(module => ({ default: module.ElectionViewerPage })))
+const ConstituencyListPage = lazy(() => import('./pages/ConstituencyListPage').then(module => ({ default: module.ConstituencyListPage })))
+const ConstituencyDetailPage = lazy(() => import('./pages/ConstituencyDetailPage').then(module => ({ default: module.ConstituencyDetailPage })))
 
 function App() {
   return (
@@ -32,6 +35,9 @@ function App() {
             <Route path="/eligibility" element={<EligibilityCheckerPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/cookie-policy" element={<CookiePolicyPage />} />
+            <Route path="/elections" element={<ElectionViewerPage />} />
+            <Route path="/elections/:electionId/constituencies" element={<ConstituencyListPage />} />
+            <Route path="/elections/:electionId/constituencies/:constituencyId" element={<ConstituencyDetailPage />} />
           </Routes>
         </Suspense>
       </main>

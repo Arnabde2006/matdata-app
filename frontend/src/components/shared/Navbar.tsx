@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LanguageToggle } from './LanguageToggle';
-import { Vote, MessageSquare, BookOpen, Users, MapPin, ShieldCheck } from 'lucide-react';
+import { Vote, MessageSquare, BookOpen, Users, MapPin, ShieldCheck, BarChart2 } from 'lucide-react';
 
 export const Navbar = () => {
   const { t } = useTranslation();
@@ -37,6 +37,9 @@ export const Navbar = () => {
           </Link>
           <Link to="/chatbot" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
             <MessageSquare className="w-4 h-4"/> {t('nav_chatbot')}
+          </Link>
+          <Link to="/elections" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
+            <BarChart2 className="w-4 h-4"/> {t('nav_reports')}
           </Link>
         </nav>
 

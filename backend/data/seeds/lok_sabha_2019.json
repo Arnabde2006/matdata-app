@@ -1,0 +1,165 @@
+{
+  "election": {
+    "type": "Lok Sabha",
+    "year": 2019,
+    "state": null,
+    "source": "Election Commission of India",
+    "source_url": "https://results.eci.gov.in/"
+  },
+  "constituencies": [
+    {
+      "name": "Varanasi",
+      "state": "Uttar Pradesh",
+      "seat_type": "general",
+      "summary": {
+        "total_electors": 1856791,
+        "total_votes_polled": 1060829,
+        "turnout_pct": 57.12,
+        "valid_votes": 1022371
+      },
+      "candidates": [
+        { "name": "Narendra Modi", "party": "BJP", "votes": 674664, "vote_share_pct": 65.99, "is_winner": true },
+        { "name": "Shalini Yadav", "party": "SP", "votes": 195159, "vote_share_pct": 19.09, "is_winner": false },
+        { "name": "Ajay Rai", "party": "INC", "votes": 152548, "vote_share_pct": 14.92, "is_winner": false }
+      ]
+    },
+    {
+      "name": "Gandhinagar",
+      "state": "Gujarat",
+      "seat_type": "general",
+      "summary": {
+        "total_electors": 1945678,
+        "total_votes_polled": 1280000,
+        "turnout_pct": 65.79,
+        "valid_votes": 1207632
+      },
+      "candidates": [
+        { "name": "Amit Shah", "party": "BJP", "votes": 875973, "vote_share_pct": 72.54, "is_winner": true },
+        { "name": "C.J. Chavda", "party": "INC", "votes": 331659, "vote_share_pct": 27.46, "is_winner": false }
+      ]
+    },
+    {
+      "name": "Lucknow",
+      "state": "Uttar Pradesh",
+      "seat_type": "general",
+      "summary": {
+        "total_electors": 2038761,
+        "total_votes_polled": 1105632,
+        "turnout_pct": 54.23,
+        "valid_votes": 1098761
+      },
+      "candidates": [
+        { "name": "Rajnath Singh", "party": "BJP", "votes": 633026, "vote_share_pct": 57.61, "is_winner": true },
+        { "name": "Poonam Shatrughan Sinha", "party": "SP", "votes": 285724, "vote_share_pct": 26.0, "is_winner": false },
+        { "name": "Pramod Krishnam", "party": "INC", "votes": 180011, "vote_share_pct": 16.39, "is_winner": false }
+      ]
+    },
+    {
+      "name": "Amethi",
+      "state": "Uttar Pradesh",
+      "seat_type": "general",
+      "summary": {
+        "total_electors": 1743521,
+        "total_votes_polled": 885612,
+        "turnout_pct": 50.8,
+        "valid_votes": 881908
+      },
+      "candidates": [
+        { "name": "Smriti Irani", "party": "BJP", "votes": 468514, "vote_share_pct": 53.13, "is_winner": true },
+        { "name": "Rahul Gandhi", "party": "INC", "votes": 413394, "vote_share_pct": 46.87, "is_winner": false }
+      ]
+    },
+    {
+      "name": "Wayanad",
+      "state": "Kerala",
+      "seat_type": "general",
+      "summary": {
+        "total_electors": 1357819,
+        "total_votes_polled": 1065219,
+        "turnout_pct": 78.45,
+        "valid_votes": 1059780
+      },
+      "candidates": [
+        { "name": "Rahul Gandhi", "party": "INC", "votes": 706367, "vote_share_pct": 66.65, "is_winner": true },
+        { "name": "P.P. Suneer", "party": "CPI", "votes": 274597, "vote_share_pct": 25.91, "is_winner": false },
+        { "name": "Thushar Vellappally", "party": "BDJS", "votes": 78816, "vote_share_pct": 7.44, "is_winner": false }
+      ]
+    },
+    {
+      "name": "Nagpur",
+      "state": "Maharashtra",
+      "seat_type": "general",
+      "summary": {
+        "total_electors": 2161098,
+        "total_votes_polled": 1110543,
+        "turnout_pct": 51.39,
+        "valid_votes": 1104433
+      },
+      "candidates": [
+        { "name": "Nitin Gadkari", "party": "BJP", "votes": 660221, "vote_share_pct": 59.78, "is_winner": true },
+        { "name": "Nana Patole", "party": "INC", "votes": 444212, "vote_share_pct": 40.22, "is_winner": false }
+      ]
+    },
+    {
+      "name": "Bangalore South",
+      "state": "Karnataka",
+      "seat_type": "general",
+      "summary": {
+        "total_electors": 2215643,
+        "total_votes_polled": 1152341,
+        "turnout_pct": 52.01,
+        "valid_votes": 1147266
+      },
+      "candidates": [
+        { "name": "Tejasvi Surya", "party": "BJP", "votes": 739229, "vote_share_pct": 64.43, "is_winner": true },
+        { "name": "B.K. Hariprasad", "party": "INC", "votes": 408037, "vote_share_pct": 35.57, "is_winner": false }
+      ]
+    },
+    {
+      "name": "New Delhi",
+      "state": "Delhi",
+      "seat_type": "general",
+      "summary": {
+        "total_electors": 1617421,
+        "total_votes_polled": 907542,
+        "turnout_pct": 56.11,
+        "valid_votes": 902568
+      },
+      "candidates": [
+        { "name": "Meenakashi Lekhi", "party": "BJP", "votes": 504206, "vote_share_pct": 55.86, "is_winner": true },
+        { "name": "Ajay Maken", "party": "INC", "votes": 247702, "vote_share_pct": 27.44, "is_winner": false },
+        { "name": "Brijesh Goyal", "party": "AAP", "votes": 150660, "vote_share_pct": 16.7, "is_winner": false }
+      ]
+    },
+    {
+      "name": "Patna Sahib",
+      "state": "Bihar",
+      "seat_type": "general",
+      "summary": {
+        "total_electors": 2150987,
+        "total_votes_polled": 935612,
+        "turnout_pct": 43.5,
+        "valid_votes": 930255
+      },
+      "candidates": [
+        { "name": "Ravi Shankar Prasad", "party": "BJP", "votes": 607506, "vote_share_pct": 65.3, "is_winner": true },
+        { "name": "Shatrughan Sinha", "party": "INC", "votes": 322749, "vote_share_pct": 34.7, "is_winner": false }
+      ]
+    },
+    {
+      "name": "Gurdaspur",
+      "state": "Punjab",
+      "seat_type": "general",
+      "summary": {
+        "total_electors": 1598432,
+        "total_votes_polled": 1040512,
+        "turnout_pct": 65.1,
+        "valid_votes": 1034979
+      },
+      "candidates": [
+        { "name": "Sunny Deol", "party": "BJP", "votes": 558719, "vote_share_pct": 53.98, "is_winner": true },
+        { "name": "Sunil Jakhar", "party": "INC", "votes": 476260, "vote_share_pct": 46.02, "is_winner": false }
+      ]
+    }
+  ]
+}

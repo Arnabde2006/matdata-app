@@ -102,3 +102,53 @@ model TimelineEvent {
   state          State?   @relation(fields: [state_id], references: [id])
 }
 
+model HistoricalElection {
+  id             Int                      @id @default(autoincrement())
+  type           String                   // "Lok Sabha" or "Vidhan Sabha"
+  year           Int
+  state          String?                  // null for LS
+  source         String
+  source_url     String
+  ingested_at    DateTime                 @default(now())
+  constituencies HistoricalConstituency[]
+}
+
+model HistoricalConstituency {
+  id          Int                            @id @default(autoincrement())
+  election_id Int
+  name        String
+  state       String
+  seat_type   String                         // "general", "SC", "ST"
+  source      String
+  source_url  String
+  election    HistoricalElection             @relation(fields: [election_id], references: [id], onDelete: Cascade)
+  candidates  HistoricalCandidate[]
+  summary     HistoricalConstituencySummary?
+}
+
+model HistoricalCandidate {
+  id              Int                    @id @default(autoincrement())
+  constituency_id Int
+  name            String
+  party           String
+  votes           Int
+  vote_share_pct  Float
+  result          String                 // "won" or "lost"
+  is_winner       Boolean
+  source          String
+  source_url      String
+  constituency    HistoricalConstituency @relation(fields: [constituency_id], references: [id], onDelete: Cascade)
+}
+
+model HistoricalConstituencySummary {
+  id                 Int                    @id @default(autoincrement())
+  constituency_id    Int                    @unique
+  total_electors     Int
+  total_votes_polled Int
+  turnout_pct        Float
+  valid_votes        Int
+  source             String
+  source_url         String
+  constituency       HistoricalConstituency @relation(fields: [constituency_id], references: [id], onDelete: Cascade)
+}
+

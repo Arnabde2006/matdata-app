@@ -16,6 +16,7 @@ describe('Navbar Component', () => {
     render(<BrowserRouter><Navbar /></BrowserRouter>);
     expect(screen.getByText('nav_timeline')).toHaveAttribute('href', '/timeline');
     expect(screen.getByText('nav_flashcards')).toHaveAttribute('href', '/learn');
+    expect(screen.getByText('nav_reports')).toHaveAttribute('href', '/elections');
   });
 
   it('renders language toggle and translate widget', () => {
