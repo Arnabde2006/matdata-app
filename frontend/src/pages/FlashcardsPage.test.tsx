@@ -24,12 +24,12 @@ const mockCards = [
 ];
 
 beforeEach(() => {
-  global.fetch = vi.fn().mockImplementation(() =>
+  globalThis.fetch = vi.fn().mockImplementation(() =>
     Promise.resolve({
       ok: true,
       json: () => Promise.resolve(mockCards),
     })
-  ) as unknown as typeof global.fetch;
+  ) as unknown as typeof globalThis.fetch;
   localStorage.clear();
 });
 
